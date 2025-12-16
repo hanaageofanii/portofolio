@@ -23,43 +23,69 @@ useTexture.preload("/image/muidzotun-avissa.png");
 
 export default function App() {
   return (
-    <Canvas camera={{ position: [0, 0, 13], fov: 25 }}>
-      <ambientLight intensity={Math.PI} />
-      <Physics interpolate gravity={[0, -40, 0]} timeStep={1 / 60}>
-        <Band />
-      </Physics>
-      <Environment background blur={0.75}>
-        <color attach="background" args={["#050a30"]} />
-        <Lightformer
-          intensity={2}
-          color="white"
-          position={[0, -1, 5]}
-          rotation={[0, 0, Math.PI / 3]}
-          scale={[100, 0.1, 1]}
-        />
-        <Lightformer
-          intensity={3}
-          color="white"
-          position={[-1, -1, 1]}
-          rotation={[0, 0, Math.PI / 3]}
-          scale={[100, 0.1, 1]}
-        />
-        <Lightformer
-          intensity={3}
-          color="white"
-          position={[1, 1, 1]}
-          rotation={[0, 0, Math.PI / 3]}
-          scale={[100, 0.1, 1]}
-        />
-        <Lightformer
-          intensity={10}
-          color="white"
-          position={[-10, 0, 14]}
-          rotation={[0, Math.PI / 2, Math.PI / 3]}
-          scale={[100, 10, 1]}
-        />
-      </Environment>
-    </Canvas>
+    <div
+      style={{
+        width: "100vw",
+        height: "100vh",
+        position: "relative",
+        overflow: "hidden",
+      }}>
+      {/* TEXT — DI BELAKANG */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          display: "flex",
+          backgroundColor: "#1A3D64",
+          justifyContent: "center",
+          alignItems: "center",
+
+          color: "#F4F4F4F4",
+          fontSize: "clamp(64px, 12vw, 110px)",
+          fontWeight: "bold",
+          fontFamily: "Arial, sans-serif, Helvetica",
+          letterSpacing: "9px",
+          textShadow: "0 0 3px rgba(255, 255, 255, 0.64)",
+
+          zIndex: 1,
+          pointerEvents: "none",
+          userSelect: "none",
+        }}>
+        PORTOFOLIO
+      </div>
+
+      {/* CANVAS */}
+      <Canvas
+        camera={{ position: [0, 0, 12], fov: 25 }}
+        style={{
+          position: "relative",
+          zIndex: 2,
+        }}>
+        <ambientLight intensity={Math.PI} />
+
+        <Physics interpolate gravity={[0, -40, 0]} timeStep={1 / 60}>
+          <Band />
+        </Physics>
+
+        {/* ENVIRONMENT TANPA BACKGROUND */}
+        <Environment blur={0.75}>
+          <Lightformer
+            intensity={2}
+            color="white"
+            position={[0, -1, 5]}
+            rotation={[0, 0, Math.PI / 3]}
+            scale={[100, 0.1, 1]}
+          />
+          <Lightformer
+            intensity={2}
+            color="white"
+            position={[-10, 0, 14]}
+            rotation={[0, Math.PI / 2, Math.PI / 3]}
+            scale={[100, 10, 1]}
+          />
+        </Environment>
+      </Canvas>
+    </div>
   );
 }
 
@@ -148,7 +174,7 @@ function Band({ maxSpeed = 50, minSpeed = 10 }) {
 
   return (
     <>
-      <group position={[4, 4, 0]}>
+      <group position={[4.5, 4, 0]}>
         <RigidBody ref={fixed} {...segmentProps} type="fixed" />
         <RigidBody position={[0.5, 0, 0]} ref={j1} {...segmentProps}>
           <BallCollider args={[0.1]} />
