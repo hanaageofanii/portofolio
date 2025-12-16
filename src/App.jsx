@@ -1,26 +1,66 @@
 import * as THREE from "three";
-import { useEffect, useRef, useState } from "react";
-import { Canvas, extend, useThree, useFrame } from "@react-three/fiber";
+import { useRef, useState, useEffect } from "react";
+import { Canvas, useThree, useFrame } from "@react-three/fiber";
 import {
-  useGLTF,
-  useTexture,
   Environment,
   Lightformer,
+  useGLTF,
+  useTexture,
 } from "@react-three/drei";
 import {
-  BallCollider,
-  CuboidCollider,
   Physics,
   RigidBody,
+  BallCollider,
+  CuboidCollider,
   useRopeJoint,
   useSphericalJoint,
 } from "@react-three/rapier";
+import { extend } from "@react-three/fiber";
 import { MeshLineGeometry, MeshLineMaterial } from "meshline";
 
 extend({ MeshLineGeometry, MeshLineMaterial });
-useGLTF.preload("/image/card.glb");
-useTexture.preload("/image/muidzotun-avissa.png");
 
+/* ===================== NAVBAR ===================== */
+function Navbar() {
+  return (
+    <nav
+      style={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "64px",
+        padding: "0 48px",
+
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+
+        background: "rgba(10,30,60,0.55)",
+        backdropFilter: "blur(10px)",
+
+        color: "#fff",
+        zIndex: 10,
+        fontFamily: "Arial, sans-serif",
+      }}>
+      <strong style={{ letterSpacing: "2px" }}>HANA</strong>
+
+      <div style={{ display: "flex", gap: "32px", fontSize: "14px" }}>
+        <span style={navLink}>Home</span>
+        <span style={navLink}>About</span>
+        <span style={navLink}>Project</span>
+        <span style={navLink}>Contact</span>
+      </div>
+    </nav>
+  );
+}
+
+const navLink = {
+  cursor: "pointer",
+  opacity: 0.85,
+};
+
+/* ===================== MAIN APP ===================== */
 export default function App() {
   return (
     <div
@@ -29,23 +69,26 @@ export default function App() {
         height: "100vh",
         position: "relative",
         overflow: "hidden",
+        backgroundColor: "#1A3D64",
       }}>
-      {/* TEXT — DI BELAKANG */}
+      {/* NAVBAR */}
+      <Navbar />
+
+      {/* TEXT BACKGROUND */}
       <div
         style={{
           position: "absolute",
           inset: 0,
           display: "flex",
-          backgroundColor: "#1A3D64",
           justifyContent: "center",
           alignItems: "center",
 
-          color: "#F4F4F4F4",
-          fontSize: "clamp(64px, 12vw, 110px)",
+          color: "#F4F4F4",
+          fontSize: "clamp(64px, 12vw, 120px)",
           fontWeight: "bold",
-          fontFamily: "Arial, sans-serif, Helvetica",
-          letterSpacing: "9px",
-          textShadow: "0 0 3px rgba(255, 255, 255, 0.64)",
+          letterSpacing: "10px",
+          fontFamily: "Arial, sans-serif",
+          textShadow: "0 0 4px rgba(255,255,255,0.6)",
 
           zIndex: 1,
           pointerEvents: "none",
@@ -63,24 +106,14 @@ export default function App() {
         }}>
         <ambientLight intensity={Math.PI} />
 
-        <Physics interpolate gravity={[0, -40, 0]} timeStep={1 / 60}>
+        <Physics gravity={[0, -40, 0]}>
           <Band />
         </Physics>
 
-        {/* ENVIRONMENT TANPA BACKGROUND */}
-        <Environment blur={0.75}>
+        <Environment blur={0.7}>
           <Lightformer
             intensity={2}
-            color="white"
-            position={[0, -1, 5]}
-            rotation={[0, 0, Math.PI / 3]}
-            scale={[100, 0.1, 1]}
-          />
-          <Lightformer
-            intensity={2}
-            color="white"
             position={[-10, 0, 14]}
-            rotation={[0, Math.PI / 2, Math.PI / 3]}
             scale={[100, 10, 1]}
           />
         </Environment>
@@ -88,7 +121,6 @@ export default function App() {
     </div>
   );
 }
-
 function Band({ maxSpeed = 50, minSpeed = 10 }) {
   const band = useRef(), fixed = useRef(), j1 = useRef(), j2 = useRef(), j3 = useRef(), card = useRef() // prettier-ignore
   const vec = new THREE.Vector3(), ang = new THREE.Vector3(), rot = new THREE.Vector3(), dir = new THREE.Vector3() // prettier-ignore
