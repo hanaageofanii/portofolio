@@ -36,15 +36,10 @@ function Navbar() {
         justifyContent: "space-between",
         alignItems: "center",
 
-        background: "rgba(10,30,60,0.55)",
-        backdropFilter: "blur(10px)",
-
         color: "#fff",
         zIndex: 10,
         fontFamily: "Arial, sans-serif",
       }}>
-      <strong style={{ letterSpacing: "2px" }}>HANA</strong>
-
       <div style={{ display: "flex", gap: "32px", fontSize: "14px" }}>
         <span style={navLink}>Home</span>
         <span style={navLink}>About</span>

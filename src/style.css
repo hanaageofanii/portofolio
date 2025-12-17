@@ -15,3 +15,12 @@ body {
   background-color: #050a30;
   justify-content: right;
 }
+
+.shuffle-text {
+  color: #f4f4f4;
+  font-size: clamp(64px, 12vw, 120px);
+  font-weight: bold;
+  letter-spacing: 10px;
+  font-family: Arial, sans-serif;
+  text-shadow: 0 0 4px rgba(255, 255, 255, 0.6);
+}
