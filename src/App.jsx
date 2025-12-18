@@ -22,29 +22,38 @@ extend({ MeshLineGeometry, MeshLineMaterial });
 
 /* ===================== NAVBAR ===================== */
 function Navbar() {
+  const scrollTo = (id) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <nav
       style={{
-        position: "absolute",
+        position: "fixed",
         top: 0,
-        left: 0,
         width: "100%",
         height: "64px",
-        padding: "0 48px",
-
         display: "flex",
-        justifyContent: "space-between",
+        justifyContent: "center",
         alignItems: "center",
-
+        zIndex: 100,
         color: "#fff",
-        zIndex: 10,
         fontFamily: "Arial, sans-serif",
       }}>
       <div style={{ display: "flex", gap: "32px", fontSize: "14px" }}>
-        <span style={navLink}>Home</span>
-        <span style={navLink}>About</span>
-        <span style={navLink}>Project</span>
-        <span style={navLink}>Contact</span>
+        <span style={navLink} onClick={() => scrollTo("hero")}>
+          Home
+        </span>
+        <span style={navLink} onClick={() => scrollTo("about")}>
+          About Me
+        </span>
+        <span style={navLink} onClick={() => scrollTo("projects")}>
+          My Project
+        </span>
+        <span style={navLink} onClick={() => scrollTo("contact")}>
+          Contact
+        </span>
       </div>
     </nav>
   );
@@ -55,10 +64,11 @@ const navLink = {
   opacity: 0.85,
 };
 
-/* ===================== MAIN APP ===================== */
-export default function App() {
+/* ===================== HERO ===================== */
+function HeroSection() {
   return (
-    <div
+    <section
+      id="hero"
       style={{
         width: "100vw",
         height: "100vh",
@@ -66,10 +76,7 @@ export default function App() {
         overflow: "hidden",
         backgroundColor: "#1A3D64",
       }}>
-      {/* NAVBAR */}
-      <Navbar />
-
-      {/* TEXT BACKGROUND */}
+      {/* TEXT */}
       <div
         style={{
           position: "absolute",
@@ -77,14 +84,11 @@ export default function App() {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-
           color: "#F4F4F4",
           fontSize: "clamp(64px, 12vw, 120px)",
           fontWeight: "bold",
           letterSpacing: "10px",
-          fontFamily: "Arial, sans-serif",
           textShadow: "0 0 4px rgba(255,255,255,0.6)",
-
           zIndex: 1,
           pointerEvents: "none",
           userSelect: "none",
@@ -93,18 +97,11 @@ export default function App() {
       </div>
 
       {/* CANVAS */}
-      <Canvas
-        camera={{ position: [0, 0, 12], fov: 25 }}
-        style={{
-          position: "relative",
-          zIndex: 2,
-        }}>
+      <Canvas camera={{ position: [0, 0, 12], fov: 25 }}>
         <ambientLight intensity={Math.PI} />
-
         <Physics gravity={[0, -40, 0]}>
           <Band />
         </Physics>
-
         <Environment blur={0.7}>
           <Lightformer
             intensity={2}
@@ -113,9 +110,79 @@ export default function App() {
           />
         </Environment>
       </Canvas>
-    </div>
+    </section>
   );
 }
+
+/* ===================== ABOUT ===================== */
+function AboutSection() {
+  return (
+    <section
+      id="about"
+      style={{
+        minHeight: "100vh",
+        background: "#1A3D64",
+        padding: "120px 80px",
+        color: "#f4f4f4",
+        fontFamily: "Arial",
+        scrollMarginTop: "80px",
+      }}>
+      <h2 style={{ fontSize: "36px", marginBottom: "24px" }}>About Me</h2>
+      <p style={{ maxWidth: "700px", lineHeight: 1.8, color: "#f4f4f4" }}>
+        I am a photographer and creative designer who focuses on visual
+        storytelling, composition, and modern digital aesthetics.
+      </p>
+    </section>
+  );
+}
+
+/* ===================== PROJECT ===================== */
+function ProjectSection() {
+  return (
+    <section
+      id="projects"
+      style={{
+        minHeight: "100vh",
+        background: "#1A3D64",
+        padding: "120px 80px",
+        color: "#fff",
+        scrollMarginTop: "80px",
+      }}>
+      <h2 style={{ fontSize: "36px" }}>My Projects</h2>
+    </section>
+  );
+}
+
+/* ===================== CONTACT ===================== */
+function ContactSection() {
+  return (
+    <section
+      id="contact"
+      style={{
+        minHeight: "100vh",
+        background: "#1A3D64",
+        padding: "120px 80px",
+        color: "#fff",
+        scrollMarginTop: "80px",
+      }}>
+      <h2 style={{ fontSize: "36px" }}>Get In Touch</h2>
+    </section>
+  );
+}
+
+/* ===================== MAIN APP ===================== */
+export default function App() {
+  return (
+    <>
+      <Navbar />
+      <HeroSection />
+      <AboutSection />
+      <ProjectSection />
+      <ContactSection />
+    </>
+  );
+}
+
 function Band({ maxSpeed = 50, minSpeed = 10 }) {
   const band = useRef(), fixed = useRef(), j1 = useRef(), j2 = useRef(), j3 = useRef(), card = useRef() // prettier-ignore
   const vec = new THREE.Vector3(), ang = new THREE.Vector3(), rot = new THREE.Vector3(), dir = new THREE.Vector3() // prettier-ignore
