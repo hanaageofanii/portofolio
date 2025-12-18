@@ -22,10 +22,25 @@ extend({ MeshLineGeometry, MeshLineMaterial });
 
 /* ===================== NAVBAR ===================== */
 function Navbar() {
+  const [isMobile, setIsMobile] = useState(false);
+  const [open, setOpen] = useState(false);
+
   const scrollTo = (id) => {
     const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+      setOpen(false);
+    }
   };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <nav
@@ -33,30 +48,78 @@ function Navbar() {
         position: "fixed",
         top: 0,
         left: 0,
-        padding: "0 48px",
         width: "100%",
         height: "64px",
+        padding: "0 clamp(16px, 5vw, 48px)",
         display: "flex",
-        justifyContent: "center",
         alignItems: "center",
+        justifyContent: isMobile ? "space-between" : "center",
         zIndex: 10,
         color: "#fff",
         fontFamily: "Arial, sans-serif",
       }}>
-      <div style={{ display: "flex", gap: "32px", fontSize: "14px" }}>
-        <span style={navLink} onClick={() => scrollTo("hero")}>
-          Home
-        </span>
-        <span style={navLink} onClick={() => scrollTo("about")}>
-          About Me
-        </span>
-        <span style={navLink} onClick={() => scrollTo("projects")}>
-          My Project
-        </span>
-        <span style={navLink} onClick={() => scrollTo("contact")}>
-          Contact
-        </span>
-      </div>
+      {/* DESKTOP MENU */}
+      {!isMobile && (
+        <div style={{ display: "flex", gap: "32px", fontSize: "14px" }}>
+          <span style={navLink} onClick={() => scrollTo("hero")}>
+            Home
+          </span>
+          <span style={navLink} onClick={() => scrollTo("about")}>
+            About Me
+          </span>
+          <span style={navLink} onClick={() => scrollTo("projects")}>
+            My Project
+          </span>
+          <span style={navLink} onClick={() => scrollTo("contact")}>
+            Contact
+          </span>
+        </div>
+      )}
+      {/* HAMBURGER */}
+      {isMobile && (
+        <div
+          onClick={() => setOpen(!open)}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "5px",
+            cursor: "pointer",
+          }}>
+          <span style={burgerLine} />
+          <span style={burgerLine} />
+          <span style={burgerLine} />
+        </div>
+      )}
+      {/* MOBILE MENU */}
+      {isMobile && open && (
+        <div
+          style={{
+            position: "absolute",
+            top: "64px",
+            left: 0,
+            width: "100%",
+            background: "#1A3D64",
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            alignItems: "right",
+            gap: "24px",
+            padding: "32px 20px",
+          }}>
+          <span style={navLink} onClick={() => scrollTo("hero")}>
+            Home
+          </span>
+          <span style={navLink} onClick={() => scrollTo("about")}>
+            About Me
+          </span>
+          <span style={navLink} onClick={() => scrollTo("projects")}>
+            My Project
+          </span>
+          <span style={navLink} onClick={() => scrollTo("contact")}>
+            Contact
+          </span>
+        </div>
+      )}
     </nav>
   );
 }
@@ -64,6 +127,14 @@ function Navbar() {
 const navLink = {
   cursor: "pointer",
   opacity: 0.85,
+  fontSize: "14px",
+  transition: "opacity 0.2s ease",
+};
+
+const burgerLine = {
+  width: "22px",
+  height: "2px",
+  backgroundColor: "#fff",
 };
 
 /* ===================== HERO ===================== */
