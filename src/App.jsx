@@ -32,12 +32,14 @@ function Navbar() {
       style={{
         position: "fixed",
         top: 0,
+        left: 0,
+        padding: "0 48px",
         width: "100%",
         height: "64px",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        zIndex: 100,
+        zIndex: 10,
         color: "#fff",
         fontFamily: "Arial, sans-serif",
       }}>
@@ -87,6 +89,7 @@ function HeroSection() {
           color: "#F4F4F4",
           fontSize: "clamp(64px, 12vw, 120px)",
           fontWeight: "bold",
+          fontFamily: "Arial, sans-serif",
           letterSpacing: "10px",
           textShadow: "0 0 4px rgba(255,255,255,0.6)",
           zIndex: 1,
@@ -97,11 +100,18 @@ function HeroSection() {
       </div>
 
       {/* CANVAS */}
-      <Canvas camera={{ position: [0, 0, 12], fov: 25 }}>
+      <Canvas
+        camera={{ position: [0, 0, 12], fov: 25 }}
+        style={{
+          position: "relative",
+          zIndex: 2,
+        }}>
         <ambientLight intensity={Math.PI} />
+
         <Physics gravity={[0, -40, 0]}>
           <Band />
         </Physics>
+
         <Environment blur={0.7}>
           <Lightformer
             intensity={2}
