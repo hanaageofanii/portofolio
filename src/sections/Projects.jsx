@@ -29,7 +29,7 @@ export default function Projects() {
       icon: "🎥",
       color: "linear-gradient(135deg, #87CEEB 0%, #7EC8E3 100%)",
       coverImage:
-        "https://images.unsplash.com/photo-1536240478700-b869070f9279?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=600&fit=crop",
       videos: [
         "https://www.youtube.com/embed/dQw4w9WgXcQ",
         "https://www.youtube.com/embed/dQw4w9WgXcQ",
